@@ -3,7 +3,11 @@ export class Character {
         public id: number,
         public name : string,
         public description : string,
-        public thumbnail : Thumbnail
+        public thumbnail : Thumbnail,
+        public comics: any,
+        public series: any,
+        public stories: any,
+        public events: any,
     ) {}
 }
 

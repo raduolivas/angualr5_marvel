@@ -1,3 +1,20 @@
-<p>
-  characters-list works!
-</p>
+<!-- <mat-grid-list cols="4" *ngFor="let cha of characters">
+  <mat-grid-tile>{{cha.name}}</mat-grid-tile>
+</mat-grid-list> -->
+
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let cha of characters">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{cha.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <a [routerLink]="['/character', cha.id, 'info']"><img src="{{cha.thumbnail.path}}.{{cha.thumbnail.extension}}" width="150" height="170"></a>
+
+
+  </mat-expansion-panel>
+</mat-accordion>

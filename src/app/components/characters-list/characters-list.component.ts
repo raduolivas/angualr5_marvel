@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Character } from '../../models/character.model';
-import { Marvelervice } from '../../services/marvel.service';
+import { MarvelService } from '../../services/marvel.service';
 import { OrderPipe } from 'ngx-order-pipe';
 
 @Component({
@@ -12,7 +12,7 @@ import { OrderPipe } from 'ngx-order-pipe';
 export class CharactersListComponent implements OnInit {
   private characters: Array<Character> = [];
 
-  constructor(private marvelService : Marvelervice, private orderPipe: OrderPipe) { }
+  constructor(private marvelService : MarvelService, private orderPipe: OrderPipe) { }
 
   ngOnInit() {
     this.getCharacters();
@@ -21,10 +21,7 @@ export class CharactersListComponent implements OnInit {
   getCharacters() {
     this.marvelService.getCharacters()
       .subscribe(
-        data => {
-          console.log(data);
-          this.characters = data;
-        },
+        characters => this.characters = characters,
         error => console.log('Something wrong'),
       )
   }
