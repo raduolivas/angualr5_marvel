@@ -17,7 +17,10 @@ export class MarvelService {
     private marvelCharactersUrl = "http://gateway.marvel.com/v1/public/";
     private publicKey = "cc41a84866f3b327adb589068e227f68";
     private privateKey = "8bd7c4ec7c56f94402ffa3616a81eef036567528";
-    private eventsImages : EventsImages[] = [];
+    private imagesPathEmpty :Observable<EventsImages[]>;
+    public eventsImages : EventsImages[] = [];
+
+    public loading : boolean = false
 
     constructor(private httpClient: HttpClient) {}
 
@@ -36,10 +39,10 @@ export class MarvelService {
 
     public getCharacters(limit : number = 20, prefix : string= null) : Observable<Character[]> {
         let params = this.setRequestParams();
-        let url = this.marvelCharactersUrl + "characters?" + "limit="+ limit+ params ;
+        let url = this.marvelCharactersUrl + "characters" + params + "&limit="+ limit;
         
         if (prefix) {
-            url += "&nameStartsWith" + prefix;
+            url += "&nameStartsWith=" + prefix;
         }
 
         return this.httpClient.get<Character[]>(url).pipe(
@@ -49,12 +52,22 @@ export class MarvelService {
         );
     }
 
-    public getEventImgList(listOfEvents: any) : Observable<EventsImages[]> {
-        let params = this.setRequestParams();
-        // let _params = "?ts=" + params.timeStamp + "&apikey=" + this.publicKey + "&hash=" + params.hash;
+    public getCharacterById(id : string) : Observable<Character> {
+        const params = this.setRequestParams();
 
-        let url = listOfEvents.length ? listOfEvents[0].resourceURI + params : "";
+        let url = this.marvelCharactersUrl + "characters/" + id + params;
+
+        return this.httpClient.get<Character>(url).pipe(
+            catchError(this.errorHandler),
+            map((character) => this.handleCharacter(character))
         
+        );
+    }
+
+    public getEventImgList(listOfEvents: any) : Observable<EventsImages[]> {
+        this.loading = true;
+        let params = this.setRequestParams();
+        let url = listOfEvents.length ? listOfEvents[0].resourceURI + params : "";
         this.eventsImages = [];
 
         //TODO: It need to be a loop of requests for each event item
@@ -78,20 +91,9 @@ export class MarvelService {
         return this.eventsImages;
     }
 
-    public getCharacterById(id : string) : Observable<Character> {
-        const params = this.setRequestParams();
-
-        let url = this.marvelCharactersUrl + "characters/" + id + params;
-
-        return this.httpClient.get<Character>(url).pipe(
-            catchError(this.errorHandler),
-            map((character) => this.handleCharacter(character))
-        
-        );
-    }
-
     private errorHandler(error: Response){
         console.log(error)
+        this.loading = false;
         return _throw(error);
     }
 
