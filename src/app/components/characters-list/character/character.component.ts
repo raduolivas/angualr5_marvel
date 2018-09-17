@@ -14,6 +14,7 @@ export class CharacterComponent implements OnInit {
   private id : string;
   private character: Character;
   private eventImages: EventsImages[] = [];
+  private evtImgIsLoading : boolean = false;
 
   constructor(
     private marvelService: MarvelService,
@@ -33,7 +34,7 @@ export class CharacterComponent implements OnInit {
       .subscribe(
         (character: Character) => {
           this.character = character,
-          this.loadCharacterEventsImages(character.events.items);
+          this.loadCharacterEventsImages(character.events.items)
         }
       )
   }

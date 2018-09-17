@@ -1,6 +1,16 @@
-<div class="row" *ngIf="characters">
+
+<div class="row pt-1">
+  <div class="col-md-6"  *ngIf="loading">
+      <img src="../../../assets/loading.gif"/>
+  </div>
+  
+  <div class="col-md-12"  *ngIf="!loading && characters.length === 0">
+    <div class="alert alert-danger" role="alert">
+      No characters found!
+    </div>
+  </div>
   <div class="col-md-4" *ngFor="let cha of characters">
- 
+  
     <div class="card" style="width: 18rem;">
       <a [routerLink]="['/character', cha.id, 'info']">
         <img class="card-img-top" src="{{cha.thumbnail.path}}.{{cha.thumbnail.extension}}" >
