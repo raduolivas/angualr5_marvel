@@ -16,6 +16,7 @@ export class SearchComponent implements OnInit {
   private loading: boolean = false;
 
   constructor(private route: ActivatedRoute, private marvelService: MarvelService, private orderPipe: OrderPipe) {
+
     this.route.params.subscribe(params => {
       if (params['prefix']) {
         this.onSearch(params.prefix)
