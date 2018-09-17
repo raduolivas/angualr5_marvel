@@ -37,7 +37,7 @@ export class MarvelService {
         return new Date().valueOf().toString();
     }
 
-    public getCharacters(limit : number = 20, prefix : string= null) : Observable<Character[]> {
+    public getCharacters(limit : number = 40, prefix : string= null) : Observable<Character[]> {
         let params = this.setRequestParams();
         let url = this.marvelCharactersUrl + "characters" + params + "&limit="+ limit;
         
